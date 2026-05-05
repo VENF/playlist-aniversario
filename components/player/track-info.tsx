@@ -12,15 +12,17 @@ const DynamicShadowDisc = ({
   currentTrack: any
 }) => {
   return (
-    <div className="group relative my-[20px] flex flex-col items-center gap-4 text-center">
+    <div className="group relative my-[20px] flex flex-col items-center gap-4 text-center z-2">
       {currentTrack?.front && (
         <motion.div
-          className="absolute -inset-2 top-[10px] z-0 rounded-full opacity-70 blur-[30px] dark:opacity-30 dark:blur-[10px]"
-          custom={isPlaying}
+
+          className="absolute -inset-2 top-[10px] z-0 overflow-hidden rounded-full opacity-70 blur-[30px] dark:opacity-30 dark:blur-[10px]"
           animate={{
             rotate: isPlaying ? 360 : 0,
-            transition: {
-              duration: isPlaying ? 15 : 0,
+          }}
+          transition={{
+            rotate: {
+              duration: 15,
               repeat: Infinity,
               ease: "linear",
             },
@@ -33,17 +35,19 @@ const DynamicShadowDisc = ({
             fill
             className="rounded-full object-cover"
             unoptimized
+            priority 
           />
         </motion.div>
       )}
 
       <motion.div
         className="relative z-10 h-[270px] w-[270px] overflow-hidden rounded-full border-2 shadow-inner"
-        custom={isPlaying}
         animate={{
           rotate: isPlaying ? 360 : 0,
-          transition: {
-            duration: isPlaying ? 15 : 0,
+        }}
+        transition={{
+          rotate: {
+            duration: 15,
             repeat: Infinity,
             ease: "linear",
           },
@@ -63,13 +67,13 @@ const DynamicShadowDisc = ({
             fill
             className="object-cover"
             unoptimized
+            priority
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center">
             <span className="text-sm text-muted-foreground">Cover</span>
           </div>
         )}
-       
       </motion.div>
     </div>
   )

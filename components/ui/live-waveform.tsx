@@ -13,6 +13,8 @@ export type LiveWaveformProps = HTMLAttributes<HTMLDivElement> & {
   barGap?: number
   barRadius?: number
   barColor?: string
+  playedColor?: string
+  unplayedColor?: string
   fadeEdges?: boolean
   fadeWidth?: number
   height?: string | number
@@ -22,6 +24,8 @@ export type LiveWaveformProps = HTMLAttributes<HTMLDivElement> & {
   historySize?: number
   updateRate?: number
   mode?: "scrolling" | "static"
+  progress?: number
+  onSeek?: (progress: number) => void
   onError?: (error: Error) => void
   onStreamReady?: (stream: MediaStream) => void
   onStreamEnd?: () => void
@@ -35,6 +39,8 @@ export const LiveWaveform = ({
   barGap = 1,
   barRadius = 1.5,
   barColor,
+  playedColor,
+  unplayedColor,
   fadeEdges = true,
   fadeWidth = 24,
   barHeight: baseBarHeight = 4,
@@ -45,6 +51,8 @@ export const LiveWaveform = ({
   historySize = 60,
   updateRate = 30,
   mode = "static",
+  progress = 0,
+  onSeek,
   onError,
   onStreamReady,
   onStreamEnd,
@@ -426,6 +434,7 @@ export const LiveWaveform = ({
       const step = barWidth + barGap
       const barCount = Math.floor(rect.width / step)
       const centerY = rect.height / 2
+      const progressIndex = Math.floor((progress / 100) * barCount)
 
       // Draw bars based on mode
       if (mode === "static") {
@@ -444,7 +453,11 @@ export const LiveWaveform = ({
           const barHeight = Math.max(baseBarHeight, value * rect.height * 0.8)
           const y = centerY - barHeight / 2
 
-          ctx.fillStyle = computedBarColor
+          // Use playedColor for progress (reached), unplayedColor for remaining
+          const isPlayed = i < progressIndex
+          ctx.fillStyle = isPlayed
+            ? (playedColor || computedBarColor)
+            : (unplayedColor || computedBarColor)
           ctx.globalAlpha = 0.4 + value * 0.6
 
           if (barRadius > 0) {
@@ -464,7 +477,10 @@ export const LiveWaveform = ({
           const barHeight = Math.max(baseBarHeight, value * rect.height * 0.8)
           const y = centerY - barHeight / 2
 
-          ctx.fillStyle = computedBarColor
+          const isPlayed = i < progressIndex
+          ctx.fillStyle = isPlayed
+            ? (playedColor || computedBarColor)
+            : (unplayedColor || computedBarColor)
           ctx.globalAlpha = 0.4 + value * 0.6
 
           if (barRadius > 0) {
@@ -519,6 +535,7 @@ export const LiveWaveform = ({
   }, [
     active,
     processing,
+    progress,
     sensitivity,
     updateRate,
     historySize,
@@ -527,16 +544,26 @@ export const LiveWaveform = ({
     barGap,
     barRadius,
     barColor,
+    playedColor,
+    unplayedColor,
     fadeEdges,
     fadeWidth,
     mode,
   ])
 
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!onSeek || !containerRef.current) return
+    const rect = containerRef.current.getBoundingClientRect()
+    const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
+    onSeek(percent * 100)
+  }
+
   return (
     <div
-      className={cn("relative h-full w-full", className)}
+      className={cn("relative h-full w-full cursor-pointer", className)}
       ref={containerRef}
       style={{ height: heightStyle }}
+      onClick={handleClick}
       aria-label={
         active
           ? "Live audio waveform"
@@ -544,7 +571,10 @@ export const LiveWaveform = ({
             ? "Processing audio"
             : "Audio waveform idle"
       }
-      role="img"
+      role="slider"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={progress}
       {...props}
     >
       {!active && !processing && (

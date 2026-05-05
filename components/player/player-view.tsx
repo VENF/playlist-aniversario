@@ -17,11 +17,24 @@ import { TrackInfo } from "./track-info"
         </p>
  */
 
+function formatTime(seconds: number): string {
+  const mins = Math.floor(seconds / 60)
+  const secs = Math.floor(seconds % 60)
+  return `${mins}:${secs.toString().padStart(2, "0")}`
+}
+
 export function PlayerView() {
-  const { isPlaying } = usePlayerContext()
+  const { isPlaying, progress, duration, seek, currentTime } =
+    usePlayerContext()
+
+  const handleSeek = (percent: number) => {
+    if (duration > 0) {
+      seek((percent / 100) * duration)
+    }
+  }
 
   return (
-    <div className="flex min-h-dvh flex-col justify-between py-6 px-4">
+    <div className="flex min-h-dvh flex-col justify-between px-4 py-6">
       <div className="flex items-center justify-end">
         <ThemeSwitcher />
       </div>
@@ -33,7 +46,7 @@ export function PlayerView() {
 
       <main className="flex flex-1 flex-col items-center justify-center gap-6">
         <TrackInfo />
-        <div className="w-full max-w-[320px]">
+        <div className="flex w-full max-w-[320px] flex-col gap-2">
           <LiveWaveform
             processing={isPlaying}
             active={false}
@@ -42,13 +55,16 @@ export function PlayerView() {
             barGap={1}
             barRadius={1.5}
             mode="static"
+            progress={progress}
+            playedColor="#000000"
+            unplayedColor="#9ca3af"
+            onSeek={handleSeek}
           />
+          <div className="flex relative top-[-22px] items-center justify-between text-xs text-muted-foreground">
+            <span>{formatTime(currentTime)}</span>
+            <span>{formatTime(duration || 255)}</span>
+          </div>
         </div>
-
-        <div className="w-full max-w-[320px]">
-          <ProgressBar />
-        </div>
-
         <PlayerControls />
       </main>
     </div>

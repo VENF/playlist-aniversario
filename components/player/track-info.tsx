@@ -8,7 +8,7 @@ export function TrackInfo() {
 
   return (
     <div className="flex flex-col items-center gap-4 text-center">
-      <div className="relative h-[240px] w-[240px] overflow-hidden rounded-full bg-background">
+      <div className="relative h-[270px] w-[270px] overflow-hidden rounded-full bg-background">
         {currentTrack?.front ? (
           <Image
             src={currentTrack.front}

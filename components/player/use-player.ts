@@ -16,6 +16,7 @@ export interface UsePlayerReturn {
   isPlaying: boolean
   currentTime: number
   duration: number
+  progress: number
   currentTrack: Track | null
   play: () => void
   pause: () => void
@@ -188,6 +189,7 @@ export function usePlayer(): UsePlayerReturn {
     isPlaying,
     currentTime,
     duration,
+    progress: duration > 0 ? (currentTime / duration) * 100 : 0,
     currentTrack,
     play,
     pause,

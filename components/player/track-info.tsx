@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "motion/react"
+import { AnimatePresence, motion } from "motion/react"
 import Image from "next/image"
 import { usePlayerContext } from "./player-context"
 
@@ -12,10 +12,10 @@ const DynamicShadowDisc = ({
   currentTrack: any
 }) => {
   return (
-    <div className="group relative flex flex-col items-center gap-4 text-center my-[20px]">
+    <div className="group relative my-[20px] flex flex-col items-center gap-4 text-center">
       {currentTrack?.front && (
         <motion.div
-          className="absolute top-[10px] -inset-2 z-0 rounded-full opacity-70 blur-[30px] dark:blur-[10px] dark:opacity-30"
+          className="absolute -inset-2 top-[10px] z-0 rounded-full opacity-70 blur-[30px] dark:opacity-30 dark:blur-[10px]"
           custom={isPlaying}
           animate={{
             rotate: isPlaying ? 360 : 0,
@@ -69,6 +69,7 @@ const DynamicShadowDisc = ({
             <span className="text-sm text-muted-foreground">Cover</span>
           </div>
         )}
+       
       </motion.div>
     </div>
   )
@@ -77,10 +78,8 @@ const DynamicShadowDisc = ({
 export function TrackInfo() {
   const { currentTrack, isPlaying } = usePlayerContext()
 
-  const dedicatoria = currentTrack?.dedicatoria || ""
-
   return (
-    <div className="flex flex-col items-center gap-4 text-center">
+    <div className="flex flex-col items-center gap-4 text-center z-2">
       <DynamicShadowDisc isPlaying={isPlaying} currentTrack={currentTrack} />
       <div className="flex flex-col gap-1">
         <h1 className="text-xl font-semibold text-foreground">
@@ -89,9 +88,20 @@ export function TrackInfo() {
         <p className="text-sm text-muted-foreground">
           {currentTrack?.artist || "Artista"}
         </p>
-        <p className="mt-4 overflow-hidden text-xs text-muted-foreground/70 min-h-[35px]">
-          {dedicatoria}
-        </p>
+        <div className="mt-4 flex min-h-[60px] items-center justify-center">
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={currentTrack?.title} // Se reinicia al cambiar de track
+              initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="px-4 text-[13px] leading-relaxed font-light text-muted-foreground/80 italic"
+            >
+              {currentTrack?.dedicatoria ? `"${currentTrack.dedicatoria}"` : ""}
+            </motion.p>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   )

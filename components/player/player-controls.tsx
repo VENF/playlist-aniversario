@@ -8,7 +8,7 @@ export function PlayerControls() {
   const { isPlaying, toggle, prev, next } = usePlayerContext()
 
   return (
-    <div className="flex items-center justify-center gap-8">
+    <div className="flex items-center justify-center gap-8 z-2">
       <button
         onClick={prev}
         className="flex h-12 w-12 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"

@@ -12,22 +12,21 @@ const DynamicShadowDisc = ({
   currentTrack: any
 }) => {
   return (
-    <div className="group relative z-2 my-[20px] flex flex-col items-center gap-4 text-center">
+    <div className="group relative my-[20px] flex flex-col items-center gap-4 text-center z-2">
       {currentTrack?.front && (
         <motion.div
-          className="absolute -inset-2 top-[10px] z-0 overflow-hidden rounded-full opacity-70 blur-[30px] dark:opacity-30 dark:blur-[10px]"
-          animate={{
-            rotate: isPlaying ? 360 : 0,
-          }}
+          className="absolute top-[10px] z-0 h-[200px] w-[200px] overflow-hidden rounded-full opacity-70 blur-[30px] dark:opacity-30 dark:blur-[15px] [@media(max-height:668px)]:h-[180px] [@media(max-height:668px)]:w-[180px]"
+          animate={{ rotate: isPlaying ? 360 : 0 }}
           transition={{
-            rotate: {
-              duration: 15,
-              repeat: Infinity,
-              ease: "linear",
-            },
+            rotate: { duration: 15, repeat: Infinity, ease: "linear" },
           }}
-          aria-hidden="true"
         >
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{ backgroundColor: currentTrack.colors?.primary || "#000" }}
+          />
+
+
           <Image
             src={currentTrack.front}
             alt=""
@@ -40,39 +39,27 @@ const DynamicShadowDisc = ({
       )}
 
       <motion.div
-        className="relative z-10 h-[200px] w-[200px] overflow-hidden rounded-full border-2 shadow-inner [@media(max-height:668px)]:h-[190px] [@media(max-height:668px)]:w-[190px]"
-        animate={{
-          rotate: isPlaying ? 360 : 0,
-        }}
+        className="relative z-10 h-[200px] w-[200px] overflow-hidden rounded-full border-2 shadow-inner [@media(max-height:668px)]:h-[180px] [@media(max-height:668px)]:w-[180px]"
+        animate={{ rotate: isPlaying ? 360 : 0 }}
         transition={{
-          rotate: {
-            duration: 15,
-            repeat: Infinity,
-            ease: "linear",
-          },
+          rotate: { duration: 15, repeat: Infinity, ease: "linear" },
         }}
         style={{ transformOrigin: "center center" }}
       >
         <div className="absolute inset-0 z-20 flex items-center justify-center">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-white via-gray-100 to-gray-300 shadow-lg">
-            <div className="h-2 w-2 rounded-full" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-tr from-white via-gray-100 to-gray-300 shadow-lg [@media(min-height:669px)]:h-10 [@media(min-height:669px)]:w-10">
+            <div className="h-1.5 w-1.5 rounded-full bg-black/80 [@media(min-height:669px)]:h-2 [@media(min-height:669px)]:w-2" />
           </div>
         </div>
 
-        {currentTrack?.front ? (
-          <Image
-            src={currentTrack.front}
-            alt={`Cover de ${currentTrack.title}`}
-            fill
-            className="object-cover"
-            unoptimized
-            priority
-          />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center">
-            <span className="text-sm text-muted-foreground">Cover</span>
-          </div>
-        )}
+        <Image
+          src={currentTrack.front}
+          alt={currentTrack.title}
+          fill
+          className="rounded-full object-cover"
+          unoptimized
+          priority
+        />
       </motion.div>
     </div>
   )

@@ -12,21 +12,19 @@ const DynamicShadowDisc = ({
   currentTrack: any
 }) => {
   return (
-    <div className="group relative my-[20px] flex flex-col items-center gap-4 text-center z-2">
+    <div className="group relative z-2 my-[20px] flex flex-col items-center gap-4 text-center">
       {currentTrack?.front && (
         <motion.div
           className="absolute top-[10px] z-0 h-[200px] w-[200px] overflow-hidden rounded-full opacity-70 blur-[30px] dark:opacity-30 dark:blur-[15px] [@media(max-height:668px)]:h-[180px] [@media(max-height:668px)]:w-[180px]"
           animate={{ rotate: isPlaying ? 360 : 0 }}
           transition={{
-            rotate: { duration: 15, repeat: Infinity, ease: "linear" },
+            rotate: {
+              duration: isPlaying ? 15 : 0,
+              repeat: Infinity,
+              ease: "linear",
+            },
           }}
         >
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{ backgroundColor: currentTrack.colors?.primary || "#000" }}
-          />
-
-
           <Image
             src={currentTrack.front}
             alt=""
@@ -42,7 +40,11 @@ const DynamicShadowDisc = ({
         className="relative z-10 h-[200px] w-[200px] overflow-hidden rounded-full border-2 shadow-inner [@media(max-height:668px)]:h-[180px] [@media(max-height:668px)]:w-[180px]"
         animate={{ rotate: isPlaying ? 360 : 0 }}
         transition={{
-          rotate: { duration: 15, repeat: Infinity, ease: "linear" },
+          rotate: {
+            duration: isPlaying ? 15 : 0,
+            repeat: Infinity,
+            ease: "linear",
+          },
         }}
         style={{ transformOrigin: "center center" }}
       >

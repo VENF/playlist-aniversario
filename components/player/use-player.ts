@@ -97,7 +97,7 @@ const PLAYLIST: Track[] = [
   {
     id: "6",
     title: "Brillo Mío",
-    artist: "Jósean Log",
+    artist: "Caloncho",
     src: "/assets/Caloncho - Brillo Mío.mp3",
     front: "/assets/front/brillo.jpg",
     dedicatoria: "Porque descubrí que existe medicina para el alma:",

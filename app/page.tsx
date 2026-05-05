@@ -31,8 +31,8 @@ export default function HomePage() {
   }
 
   return (
-    <div className="mx-auto flex min-h-dvh max-w-[400px] flex-col items-center justify-center bg-background px-6">
-      <div className="relative w-full rounded-lg bg-card/50 p-8">
+    <div className="mx-auto flex h-dvh max-w-[340px] flex-col items-center justify-center bg-background px-4">
+      <div className="relative w-full rounded-lg bg-card/50 p-3">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentStep}
@@ -40,28 +40,28 @@ export default function HomePage() {
             animate={{ opacity: 1, filter: "blur(0px)" }}
             exit={{ opacity: 0, filter: "blur(10px)" }}
             transition={{ duration: 0.6 }}
-            className="min-h-[120px] flex items-center justify-center"
+            className="min-h-[40px] flex items-center justify-center"
           >
-            <p className="text-center text-md leading-relaxed text-foreground">
+            <p className="text-center text-base leading-relaxed text-foreground">
               {steps[currentStep]}
             </p>
           </motion.div>
         </AnimatePresence>
 
-        <div className="mt-8 flex justify-center">
+        <div className="mt-3 flex justify-center">
           <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
             onClick={handleNext}
-            className="rounded-full border-none px-6 py-2 text-sm font-medium text-foreground transition-colors hover:bg-foreground hover:text-background"
+            className="rounded-full border-none px-5 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground hover:text-background"
           >
             {isLastStep ? "Feliz aniversario Eileen 🌹" : "Siguiente"}
           </motion.button>
         </div>
       </div>
 
-      <div className="mt-4 flex gap-1">
+      <div className="mt-1 flex gap-1">
         {steps.map((_, index) => (
           <div
             key={index}

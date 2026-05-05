@@ -12,10 +12,9 @@ const DynamicShadowDisc = ({
   currentTrack: any
 }) => {
   return (
-    <div className="group relative my-[20px] flex flex-col items-center gap-4 text-center z-2">
+    <div className="group relative z-2 my-[20px] flex flex-col items-center gap-4 text-center">
       {currentTrack?.front && (
         <motion.div
-
           className="absolute -inset-2 top-[10px] z-0 overflow-hidden rounded-full opacity-70 blur-[30px] dark:opacity-30 dark:blur-[10px]"
           animate={{
             rotate: isPlaying ? 360 : 0,
@@ -35,13 +34,13 @@ const DynamicShadowDisc = ({
             fill
             className="rounded-full object-cover"
             unoptimized
-            priority 
+            priority
           />
         </motion.div>
       )}
 
       <motion.div
-        className="relative z-10 h-[270px] w-[270px] overflow-hidden rounded-full border-2 shadow-inner"
+        className="relative z-10 h-[270px] w-[270px] overflow-hidden rounded-full border-2 shadow-inner [@media(max-height:668px)]:h-[190px] [@media(max-height:668px)]:w-[190px]"
         animate={{
           rotate: isPlaying ? 360 : 0,
         }}
@@ -83,7 +82,7 @@ export function TrackInfo() {
   const { currentTrack, isPlaying } = usePlayerContext()
 
   return (
-    <div className="flex flex-col items-center gap-4 text-center z-2">
+    <div className="z-2 flex flex-col items-center gap-4 text-center">
       <DynamicShadowDisc isPlaying={isPlaying} currentTrack={currentTrack} />
       <div className="flex flex-col gap-1">
         <h1 className="text-xl font-semibold text-foreground">

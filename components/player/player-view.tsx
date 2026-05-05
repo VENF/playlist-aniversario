@@ -7,63 +7,54 @@ import { PlayerControls } from "./player-controls"
 import { TrackInfo } from "./track-info"
 import { motion } from "motion/react"
 
-/**
-        <p className="text-[10px] text-muted-foreground text-center mt-2 max-w-[400px]">
-          Generalmente, considero que no se me dan muy bien las palabras y no sé
-          cómo expresar genuinamente lo que siento. Esta playlist existe por esa
-          razón y su propósito es claro: responder a la pregunta “¿por qué me
-          enamoré de ti?”. Creo que cuando las palabras están de más, el alma
-          entiende mejor.
-        </p>
- */
 
 function DynamicBackground({ color, secondary }: { color?: string; secondary?: string }) {
   return (
-    <div className="fixed inset-0 z-1 bg-background overflow-hidden">
+    <div className="absolute inset-0 z-1 overflow-hidden pointer-events-none">
       <motion.div
         animate={{
-          borderRadius: [
-            "40% 60% 70% 30% / 40% 50% 60% 50%",
-            "60% 40% 30% 70% / 50% 60% 40% 60%",
-            "40% 60% 70% 30% / 40% 50% 60% 50%",
-          ],
-  
-          x: [0, 50, -30, 0],
-          y: [0, -40, 20, 0],
-          scale: [1, 1.2, 0.9, 1],
+          backgroundColor: color || "var(--primary)",
+          y: [0, 15, 0], 
+          x: [0, 10, 0], 
+          scale: [1, 1.05, 1],
         }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
+        transition={{ 
+          backgroundColor: { duration: 2, ease: "easeInOut" },
+          duration: 8, 
+          repeat: Infinity, 
+          ease: "easeInOut" 
         }}
-        className="absolute -top-[400px] -right-40 h-[600px] w-[600px] blur-[100px] opacity-[0.25]"
-        style={{ backgroundColor: color || "var(--primary)" }}
+    
+        className="absolute -top-16 left-1/2 -translate-x-1/3 h-44 w-64 rounded-full blur-[70px] opacity-40"
+        style={{ 
+          willChange: "transform, background-color",
+          transform: "translateZ(0)" 
+        }}
       />
 
       <motion.div
         animate={{
-          borderRadius: [
-            "50% 50% 30% 70% / 50% 30% 70% 50%",
-            "30% 70% 50% 50% / 70% 50% 30% 50%",
-            "50% 50% 30% 70% / 50% 30% 70% 50%",
-          ],
-          x: [0, -60, 40, 0],
-          y: [0, 30, -50, 0],
-          scale: [1, 0.8, 1.1, 1],
+          backgroundColor: secondary || color || "var(--primary)",
+          y: [0, -20, 0],
+          x: [0, -15, 0],
+          scale: [1, 1.1, 1],
         }}
-        transition={{
-          duration: 7,
-          repeat: Infinity,
+        transition={{ 
+          backgroundColor: { duration: 2, ease: "easeInOut" },
+          duration: 10, 
+          repeat: Infinity, 
           ease: "easeInOut",
+          delay: 0.5 
         }}
-        className="absolute -bottom-[600px] -left-40 h-[700px] w-[700px] blur-[120px] opacity-[0.15]"
-        style={{ backgroundColor: secondary || "var(--primary)" }}
+        className="absolute -bottom-16 left-1/2 -translate-x-1/1 h-44 w-64 rounded-full blur-[80px] opacity-30"
+        style={{ 
+          willChange: "transform, background-color",
+          transform: "translateZ(0)"
+        }}
       />
     </div>
   )
-}        
-
+}
 function formatTime(seconds: number): string {
   const mins = Math.floor(seconds / 60)
   const secs = Math.floor(seconds % 60)
@@ -81,7 +72,8 @@ export function PlayerView() {
   }
 
   return (
-    <div className="flex min-h-dvh flex-col justify-between px-5 py-6">
+    <div className="relativeflex min-h-dvh flex-col justify-between px-5 py-4">
+              <DynamicBackground color={currentTrack?.colors.primary} secondary={currentTrack?.colors.secondary} />
       <div className="flex items-center justify-end z-2">
         <ThemeSwitcher />
       </div>
@@ -91,9 +83,8 @@ export function PlayerView() {
         </h2>
       </header>
 
-      <main className="flex flex-1 flex-col items-center justify-center gap-6">
+      <main className="flex flex-1 flex-col items-center justify-center gap-5">
         <TrackInfo />
-        <DynamicBackground color={currentTrack?.colors.primary} secondary={currentTrack?.colors.secondary} />
         <div className="flex w-full max-w-[320px] flex-col gap-2 z-2">
           <LiveWaveform
             processing={isPlaying}

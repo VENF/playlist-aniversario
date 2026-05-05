@@ -40,7 +40,7 @@ const DynamicShadowDisc = ({
       )}
 
       <motion.div
-        className="relative z-10 h-[270px] w-[270px] overflow-hidden rounded-full border-2 shadow-inner [@media(max-height:668px)]:h-[190px] [@media(max-height:668px)]:w-[190px]"
+        className="relative z-10 h-[200px] w-[200px] overflow-hidden rounded-full border-2 shadow-inner [@media(max-height:668px)]:h-[190px] [@media(max-height:668px)]:w-[190px]"
         animate={{
           rotate: isPlaying ? 360 : 0,
         }}

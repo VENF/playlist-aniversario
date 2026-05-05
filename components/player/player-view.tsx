@@ -4,7 +4,6 @@ import { LiveWaveform } from "@/components/ui/live-waveform"
 import { ThemeSwitcher } from "@/components/theme-swticher"
 import { usePlayerContext } from "./player-context"
 import { PlayerControls } from "./player-controls"
-import { ProgressBar } from "./progress-bar"
 import { TrackInfo } from "./track-info"
 
 /**
@@ -34,7 +33,7 @@ export function PlayerView() {
   }
 
   return (
-    <div className="flex min-h-dvh flex-col justify-between px-4 py-6">
+    <div className="flex min-h-dvh flex-col justify-between px-5 py-6">
       <div className="flex items-center justify-end">
         <ThemeSwitcher />
       </div>
